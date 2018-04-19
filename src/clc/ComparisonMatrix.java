@@ -778,7 +778,7 @@ public class ComparisonMatrix extends Matrix {
      *
      * @param vector vector with which to fill the matrix
      */
-    public final void setFromVector(@NotNull ArrayList<Double> vector) {
+    final void setFromVector(@NotNull ArrayList<Double> vector) {
         int n = vector.size();
         if(vector.contains(0d)) throw new ArithmeticException("Division by zero");
         if(Utils.sumArray(vector) != 1) throw new IllegalArgumentException("Vector's element must be sum 1");
@@ -867,7 +867,7 @@ public class ComparisonMatrix extends Matrix {
      *
      * @param scale scale to set to this
      */
-    public void setScale(Scale scale) {
+    void setScale(Scale scale) {
         _scale = scale;
     }
     
@@ -876,7 +876,7 @@ public class ComparisonMatrix extends Matrix {
      *
      * @return the scale used in this
      */
-    public Scale getScale() {
+    Scale getScale() {
         return _scale;
     }
     
@@ -885,7 +885,7 @@ public class ComparisonMatrix extends Matrix {
      *
      * @return true if number of rows equals the number of columns
      */
-    public boolean isSquare(){
+    boolean isSquare(){
         return getRowDimension() == getColumnDimension();
     }
     
@@ -898,7 +898,7 @@ public class ComparisonMatrix extends Matrix {
      * @param   column column index across to performs the sum
      * @return  sum of values
      */
-    public double getColumnSum(int column) {
+    double getColumnSum(int column) {
         return Utils.sumArray(getColumn(column));
     }
     
@@ -956,7 +956,7 @@ public class ComparisonMatrix extends Matrix {
      *
      * @param column column index to be normalized
      */
-    public void normalizeByColumn(int column) {
+    void normalizeByColumn(int column) {
         normalizeByColumn(column, 1);
     }
     
@@ -984,7 +984,7 @@ public class ComparisonMatrix extends Matrix {
      * @param   column index of the row to return
      * @return  an array of values
      */
-    public double[] getColumn(int column) {
+    private double[] getColumn(int column) {
         if(column < 0 || column> getColumnDimension()){
             throw new IndexOutOfBoundsException("Index out of range");
         }
