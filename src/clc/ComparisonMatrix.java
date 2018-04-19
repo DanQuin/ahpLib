@@ -678,44 +678,107 @@
 
 package clc;
 
-
-
 import Jama.Matrix;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+
+/**
+ * Class ComparisonMatrix
+ * <p>
+ *     This class contains matrix and scale to make pairwise comparison.
+ * </p>
+ *
+ * @author <a href="mailto:daniel.quinteros.12@sansano.usm.cl">Daniel Quinteros</a>
+ */
 
 public class ComparisonMatrix extends Matrix {
     
     private Scale _scale;
     
+    /**
+     * Parametrized constructor.
+     * <p>
+     *     Creates a matrix with given dimension.
+     *     All cells are filled with 0 (zero).
+     * </p>
+     *
+     * @param dimension number of row (equal to columns) to create the matrix
+     */
     public ComparisonMatrix(int dimension) {
         this(dimension, dimension, false);
     }
     
+    /**
+     * Parametrized constructor.
+     * <p>
+     *     Creates a matrix with given dimension.
+     *     Fills the cells with 0s (zeros).
+     *     If {@code identity} is {@code true} fills the diagonal with 1s (ones).
+     * </p>
+     *
+     * @param dimension number of row (equal to columns) to create the matrix
+     * @param identity  indicates if the the diagonal of the matrix
+     *                  will be filled with 1s (ones)
+     */
     public ComparisonMatrix(int dimension, boolean identity) {
         this(dimension, dimension, identity);
     }
     
+    /**
+     * Private constructor to calls super method.
+     * <p>
+     *     Creates a matrix with given dimension.
+     * </p>
+     *
+     * @param rows      number of rows to create the matrix
+     * @param columns   number of columns to create the matrix
+     */
     private ComparisonMatrix(int rows, int columns) {
         this(rows, columns, false);
     }
     
+    /**
+     * Private constructor to calls super method.
+     * <p>
+     *     Creates a matrix with given dimension.
+     *     Fills the cells with 0s (zeros).
+     *     If {@code identity} is {@code true} fills the diagonal with 1s (ones).
+     * </p>
+     *
+     * @param rows      number of rows to create the matrix
+     * @param columns   number of columns to create the matrix
+     * @param identity  indicates if the the diagonal of the matrix
+     *                  will be filled with 1s (ones)
+     */
     private ComparisonMatrix(int rows, int columns, boolean identity) {
-        /* If rows or colums < 0 -> NegativeArraySizeException */
         super(rows, columns);
         /* Matrix must be square */
-        if(rows != columns) throw new ExceptionInInitializerError();
+        if(rows != columns || rows < 0) throw new ExceptionInInitializerError();
         if(identity){
             this.fillIdentity(true);
         }
     }
     
-    public ComparisonMatrix(ArrayList<Double> weightVector) {
+    /**
+     * Constructor from {@code weigthVector}
+     * <p>
+     *     Creates a matrix and fills using the given {@code weightVector}.
+     * </p>
+     *
+     * @param weightVector vector resulting from some elicitation method
+     */
+    public ComparisonMatrix(@NotNull ArrayList<Double> weightVector) {
         this(weightVector.size(), weightVector.size());
         this.setFromVector(weightVector);
     }
     
-    public final void setFromVector(ArrayList<Double> vector) {
+    /**
+     * Sets the vector to current {@link ComparisonMatrix} object
+     *
+     * @param vector vector with which to fill the matrix
+     */
+    public final void setFromVector(@NotNull ArrayList<Double> vector) {
         int n = vector.size();
         if(vector.contains(0d)) throw new ArithmeticException("Division by zero");
         if(Utils.sumArray(vector) != 1) throw new IllegalArgumentException("Vector's element must be sum 1");
@@ -726,6 +789,17 @@ public class ComparisonMatrix extends Matrix {
         }
     }
     
+    /**
+     * Fills the current matrix
+     *
+     * <p>
+     *     Fills the cells with 0s (zeros).
+     *     If {@code identity} is {@code true} fills the diagonal with 1s (ones).
+     * </p>
+     *
+     * @param identity indicates if the the diagonal of the matrix
+     *                 will be filled with 1s (ones)
+     */
     private void fillIdentity(boolean identity){
         for(int i = 0; i < getRowDimension(); i++){
             for(int j = 0; j < getColumnDimension(); j++){
@@ -735,6 +809,14 @@ public class ComparisonMatrix extends Matrix {
         }
     }
     
+    /**
+     * Clones the current object.
+     * <p>
+     *     Makes a copy of the given object and returns it.
+     * </p>
+     *
+     * @return {@link ComparisonMatrix} objects cloned from this
+     */
     public ComparisonMatrix cloneMatrix(){
         ComparisonMatrix comparisonMatrix = new ComparisonMatrix(getRowDimension());
         comparisonMatrix.setScale(_scale);
@@ -746,6 +828,13 @@ public class ComparisonMatrix extends Matrix {
         return comparisonMatrix;
     }
     
+    /**
+     * Performs a swap (change), the value from (row, column) to (column, row)
+     * and vice versa.
+     *
+     * @param row       row from where performs a swap
+     * @param column    row from where performs a swap
+     */
     public void swap(int row, int column) {
         if (((row >= 0) && (column >= 0) && (row < getRowDimension()) && (column < getColumnDimension()))) {
             double cij = get(row, column);
@@ -755,6 +844,15 @@ public class ComparisonMatrix extends Matrix {
         else throw new IndexOutOfBoundsException("Swap index out of bound");
     }
     
+    /**
+     * Inverts value in cell (row, column)
+     * <p>
+     *     It means that {@code a=1/matrix[(row, colum)]} is put in to
+     *     matrix[(row, colum)].
+     * </p>
+     * @param row       row from where performs the operation
+     * @param column    row from where performs the operation
+     */
     public void invert(int row, int column) {
         if (((row >= 0) && (column >= 0) && (row < getRowDimension()) && (column < getColumnDimension()))) {
             double cij = get(row, column);
@@ -764,26 +862,70 @@ public class ComparisonMatrix extends Matrix {
         }
     }
     
-    public Scale setScale(Scale scale) {
-        return _scale = scale;
+    /**
+     * Sets the scale given by parameter
+     *
+     * @param scale scale to set to this
+     */
+    public void setScale(Scale scale) {
+        _scale = scale;
     }
     
+    /**
+     * Gets the scale
+     *
+     * @return the scale used in this
+     */
     public Scale getScale() {
         return _scale;
     }
     
+    /**
+     * Tests if this is a square matrix
+     *
+     * @return true if number of rows equals the number of columns
+     */
     public boolean isSquare(){
         return getRowDimension() == getColumnDimension();
     }
     
+    /**
+     * Gets the sum of given column index
+     * <p>
+     *     Performs a sum for all rows, keeping the column index fixed.
+     * </p>
+     *
+     * @param   column column index across to performs the sum
+     * @return  sum of values
+     */
     public double getColumnSum(int column) {
         return Utils.sumArray(getColumn(column));
     }
     
+    /**
+     * Gets the sum of given row index
+     * <p>
+     *     Performs a sum for all columns, keeping the row index fixed
+     * </p>
+     *
+     * @param   row row index across to performs the sum
+     * @return  sum of values
+     */
     public double getRowSum(int row) {
         return Utils.sumArray(getRow(row));
     }
     
+    /**
+     * Normalizes the values of this
+     * <p>
+     *     Performs a column sum and normalize, it means that the sum
+     *     of the new columns values will be the given number.
+     * </p>
+     *
+     * @param column        column index to be normalized
+     * @param normalizedSum number that indicates how much will be the result
+     *                      of the sum for the given column index
+     */
     public void normalizeByColumn(int column, double normalizedSum) {
         if(column < 0 || column > getColumnDimension()){
             throw new IndexOutOfBoundsException("Index out of range");
@@ -805,10 +947,25 @@ public class ComparisonMatrix extends Matrix {
         }
     }
     
+    /**
+     * Normalizes the values of this
+     * <p>
+     *     Performs a column sum and normalize, it means that the sum
+     *     of the new columns values will be one (1).
+     * </p>
+     *
+     * @param column column index to be normalized
+     */
     public void normalizeByColumn(int column) {
         normalizeByColumn(column, 1);
     }
     
+    /**
+     * Gets a copy of some column of this
+     *
+     * @param   row index of the row to return
+     * @return  an array of values
+     */
     public double[] getRow(int row){
         if(row < 0 || row > getRowDimension()){
             throw new IndexOutOfBoundsException("Index out of range");
@@ -821,6 +978,12 @@ public class ComparisonMatrix extends Matrix {
         return values;
     }
     
+    /**
+     * Gets a copy of some row of this
+     *
+     * @param   column index of the row to return
+     * @return  an array of values
+     */
     public double[] getColumn(int column) {
         if(column < 0 || column> getColumnDimension()){
             throw new IndexOutOfBoundsException("Index out of range");
@@ -833,16 +996,34 @@ public class ComparisonMatrix extends Matrix {
         return values;
     }
     
-    public void setSuper(int i, int j, double s){
-        super.set(i, j, s);
+    /**
+     * Sets the value to some entry
+     *
+     * @param row       row index
+     * @param column    column index
+     * @param value     value to set
+     */
+    public void setSuper(int row, int column, double value){
+        super.set(row, column, value);
     }
     
-    @Override public void set(int i, int j, double s){
-        if(s == 0) throw new IllegalArgumentException("Value to set in matrix cant be zero");
-        if (!((i >= 0) && (j >= 0) && (i < getRowDimension()) && (j < getColumnDimension())))
+    /**
+     * Sets the value to some entry and its inverse
+     * <p>
+     *     This method put some value to (row, column) entry and
+     *     1/value to (column, row).
+     * </p>
+     *
+     * @param row       row index
+     * @param column    column index
+     * @param value     value to set
+     */
+    @Override public void set(int row, int column, double value){
+        if(value == 0) throw new IllegalArgumentException("Value to set in matrix cant be zero");
+        if (!((row >= 0) && (column >= 0) && (row < getRowDimension()) && (column < getColumnDimension())))
             throw new IndexOutOfBoundsException("Set: index out of bound");
         //if(!_scale.contains(s)) throw new IllegalArgumentException("Value must be valid number from scale");
-        super.set(i, j, s);
-        super.set(j, i, 1/s);
+        super.set(row, column, value);
+        super.set(column, row, 1/value);
     }
 }
