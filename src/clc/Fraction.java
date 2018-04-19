@@ -878,7 +878,7 @@ public class Fraction extends Number implements Comparable<Fraction> {
         }
         return _numerator / (double) _denominator;
     }
-    @Contract(value = "null -> false", pure = true) @Override public boolean equals(Object o){
+    @Override public boolean equals(Object o){
         if(this == o) return true;
         if(o == null || getClass() != o.getClass()) return false;
         Fraction fraction = (Fraction) o;

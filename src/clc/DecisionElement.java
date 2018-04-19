@@ -678,8 +678,6 @@
 
 package clc;
 
-// TODO documentation
-
 import mss.consistency.AbstractConsistencyMethod;
 import mss.consistency.ConsistencyResult;
 import mss.consistency.ConsistencyResultList;
@@ -697,6 +695,12 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+/**
+ * DecisionElement class
+ *
+ * @author <a href="mailto:daniel.quinteros.12@sansano.usm.cl">Daniel Quinteros</a>
+ */
 
 public class DecisionElement {
     /** Name of the criterion */
@@ -766,25 +770,29 @@ public class DecisionElement {
     @Override
     public boolean equals(Object obj){
         if(this == obj) {
-             return true;
+            return true;
         }
         if (!(obj instanceof DecisionElement)) {
-               return false;
+            return false;
         }
         return _name.equals(((DecisionElement)obj)._name);
     }
-
+    
     @Override
     public int hashCode() {
         return _name.hashCode();
     }
     
     /**
-     * Adds a decisionElement as a child (sub-decisionElement) of this decisionElement
-     * @param decisionElement The child decisionElement
-     * @return The decisionElement that has been added, null otherwise
+     * Adds a {@link DecisionElement} as a child (sub-decisionElement) of this
+     *
+     * @param   decisionElement   the child {@link clc.DecisionElement}
+     * @param   recompute         indicates whether it is necessary to recompute
+     *                            the results
+     * @return  {@link DecisionElement} that has been added, null otherwise
      */
-    public DecisionElement addSubCriterion(DecisionElement decisionElement, boolean recompute) {
+    public DecisionElement addSubCriterion(DecisionElement decisionElement,
+                                           boolean recompute) {
         if (!_subCriteria.contains(decisionElement)){
             _subCriteria.add(decisionElement);
             decisionElement.setParent(this);
@@ -799,9 +807,13 @@ public class DecisionElement {
     }
     
     /**
-     * Adds a new criterion with the given name as a child (sub-criterion) of this criterion
-     * @param name The name of the child criterion
-     * @return The criterion that has been added
+     * Adds a new criterion with the given name as a child (sub-criterion)
+     * of this criterion
+     *
+     * @param name      the name of the child criterion
+     * @param recompute indicates whether it is necessary to recompute
+     *                  the results
+     * @return          the criterion that has been added
      */
     public DecisionElement addSubCriterion(String name, boolean recompute) {
         DecisionElement decisionElement = new DecisionElement(name);
@@ -976,7 +988,7 @@ public class DecisionElement {
         return this.results.get(method);
     }
      */
-
+    
     /**
      * Clear all results of this criterion.
      * */
@@ -1106,14 +1118,14 @@ public class DecisionElement {
                                                            boolean compute) {
         
         AbstractConsistencyMethod consistencyMethod = _consistencies.getForType(consistencyMethodType,
-                                                                                     priorityMethodType);
+                                                                                priorityMethodType);
         if(consistencyMethod != null){
             return consistencyMethod;
         }
         AbstractPriorityMethod priorityMethod = addPriorityMethod(priorityMethodType, compute);
         ConsistencyResult consistencyResult = new ConsistencyResult(FactoryConsistencyMethod.createMethod(consistencyMethodType,
-                                                                                                     _comparisonMatrix,
-                                                                                                     priorityMethod),
+                                                                                                          _comparisonMatrix,
+                                                                                                          priorityMethod),
                                                                     priorityMethod);
         _consistencies.add(consistencyResult);
         
@@ -1132,9 +1144,9 @@ public class DecisionElement {
         }
         AbstractPriorityMethod priorityMethod = addPriorityMethod(priorityMethodType, compute);
         ErrorResult errorResult = new ErrorResult(FactoryErrorMethod.createMethod(errorMethodType,
-                                                                                    _comparisonMatrix,
-                                                                                    priorityMethod),
-                                                                    priorityMethod);
+                                                                                  _comparisonMatrix,
+                                                                                  priorityMethod),
+                                                  priorityMethod);
         _errorMeasures.add(errorResult);
         return errorResult.getMethod();
     }
@@ -1221,7 +1233,7 @@ public class DecisionElement {
     public Double getConsistency(FactoryConsistencyMethod.ConsistencyMethodEnum consistencyMethodType,
                                  FactoryPriorityMethod.PriorityMethodEnum priorityMethodType){
         addConsistencyMethod(consistencyMethodType, priorityMethodType, true);
-    
+        
         return _consistencies.getForType(consistencyMethodType, priorityMethodType).getResult();
         /*if(isLeaf()){
             return _consistencies.getForType(consistencyMethodType, priorityMethodType).getResult();
@@ -1253,13 +1265,13 @@ public class DecisionElement {
             double newElement;
             for(int childIdx = 0; childIdx < getSubCriteriaCount(); childIdx++){
                 DecisionElement subDecisionElement = getSubCriterionByIndex(childIdx);
-            
+                
                 // Prioridad que tiene ese hijo en el actual decisionElement
                 double subDecisionElementWeight = weights.get(childIdx);
-            
+                
                 // Get the weight vector of the child
                 ArrayList<Double> subDecisionElementRank = subDecisionElement.getRanking(priorityMethodType);
-            
+                
                 if(!filledArray){
                     filledArray = true;
                     Utils.fillArray(cumulativeRanking, 0, subDecisionElementRank.size());
