@@ -678,27 +678,62 @@
 
 package clc;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.math.BigInteger;
 
-// TODO documentation
+/**
+ * Class Fraction.
+ *
+ * @author <a href="mailto:daniel.quinteros.12@sansano.usm.cl">Daniel Quinteros</a>
+ */
+
 public class Fraction extends Number implements Comparable<Fraction> {
     
     // LOCAL TYPES CONSTANTS
-    static final int ONE_INT = 1;
-    static final int ZERO_INT = 0;
-    public static final String DIVIDE_BY_ZERO = "Divide by zero.";
+    private static final int ONE_INT = 1;
+    private static final int ZERO_INT = 0;
+    private static final String DIVIDE_BY_ZERO = "Divide by zero.";
     
     // CONSTRUCTORS
-    
-    public Fraction(){
+    /**
+     * Default constructor
+     * <p>
+     *     Creates a Fraction that represents zero.
+     * </p>
+     *
+     * @see #ZERO_INT
+     */
+    private Fraction(){
         this(ZERO_INT);
     }
     
-    public Fraction(int numerator) {
+    /**
+     * Parameterized constructor
+     * <p>
+     *     Creates a Fraction that represents some number. By default the
+     *     denominator will be one.
+     * </p>
+     *
+     * @param numerator fraction's numerator
+     */
+    Fraction(int numerator) {
         this(numerator, ONE_INT);
     }
     
-    public Fraction(int numerator, int denominator) {
+    /**
+     * Double parameterized constructor
+     * <p>
+     *     Creates a Fraction that represents some number
+     *     (numerator / denominator). Uses {@link #gcd(int, int)} to
+     *     reduce fraction.
+     * </p>
+     *
+     * @param       numerator     fraction's numerator
+     * @param       denominator   fraction's denominator
+     */
+    Fraction(int numerator, int denominator) {
         if(ZERO_INT == denominator){
             throw new ArithmeticException(DIVIDE_BY_ZERO);
         }
@@ -715,7 +750,13 @@ public class Fraction extends Number implements Comparable<Fraction> {
         _denominator = denominator/gcd;
     }
     
-    public Fraction(Fraction numerator, Fraction denominator){
+    /**
+     * Creates a Fraction with the division of two Fractions
+     *
+     * @param numerator     fraction's numerator
+     * @param denominator   fraction's denominator
+     */
+    private Fraction(Fraction numerator, Fraction denominator){
         this(numerator._numerator * denominator._denominator,
              numerator._denominator * denominator._numerator);
     }
@@ -725,6 +766,13 @@ public class Fraction extends Number implements Comparable<Fraction> {
     private int _denominator;
     
     // METHODS
+    /**
+     * Performs greatest common divisor algorithm for {@code a} and {@code b}.
+     *
+     * @param   a first number to perform gdc
+     * @param   b second number to perform gdc
+     * @return  the greatest common divisor for {@code a} and {@code b}
+     */
     private static int gcd(int a, int b) {
         BigInteger b1 = BigInteger.valueOf(a);
         BigInteger b2 = BigInteger.valueOf(b);
@@ -733,28 +781,55 @@ public class Fraction extends Number implements Comparable<Fraction> {
     }
     
     // Utility function
+    /**
+     * Performs division with two Fraction objects and storage the result in
+     * this current object.
+     *
+     * @param numerator     fraction numerator
+     * @param denominator   fraction denominator
+     */
     private void divide(Fraction numerator, Fraction denominator){
         Fraction f = new Fraction(numerator, denominator);
         this._numerator = f._numerator;
         this._denominator = f._denominator;
     }
     
-    public void divide(Fraction denominator){
+    /**
+     * Divides this by another fraction.
+     *
+     * @param denominator denominator fraction
+     */
+    void divide(Fraction denominator){
         this.divide(this, denominator);
     }
     
+    /**
+     * Adds operator to this.
+     * @param operator fraction to be added
+     */
     public void add(Fraction operator){
         Fraction f = new Fraction(this._numerator * operator._denominator +
-                this._denominator * operator._numerator, this._denominator * operator._denominator);
+                                          this._denominator * operator._numerator,
+                                  this._denominator * operator._denominator);
         this._numerator = f._numerator;
         this._denominator = f._denominator;
     }
     
-    public void minus(int i){
+    /**
+     * Performs a subtraction by the given number.
+     *
+     * @param i quantity to be subtracted from this
+     */
+    void minus(int i){
         add(new Fraction(-i));
     }
     
-    public void multiply(Fraction operator){
+    /**
+     * Performs a multiplication by the given number.
+     *
+     * @param operator number to be multiplied
+     */
+    void multiply(Fraction operator){
         if (operator.doubleValue() == 0 || this.doubleValue() == 0){
             Fraction fraction = new Fraction(0);
             _numerator = fraction._numerator;
@@ -765,18 +840,27 @@ public class Fraction extends Number implements Comparable<Fraction> {
         }
     }
     
-    public void invert(){
+    /**
+     * Swaps {@link #_numerator} with {@link #_denominator} and
+     * performs {@link #gcd(int, int)} to reduce it.
+     */
+    void invert(){
         Fraction fraction = new Fraction(_denominator, _numerator);
         _numerator = fraction._numerator;
         _denominator = fraction._denominator;
     }
     
-    public Fraction getInvert(){
+    /**
+     * Returns the invert of this, without makes any changes in the state.
+     *
+     * @return a copy of this, inverted
+     */
+    Fraction getInvert(){
         return new Fraction(_denominator, _numerator);
     }
     
     // OVERRIDES
-    @Override public int compareTo(Fraction fraction){
+    @Override public int compareTo(@NotNull Fraction fraction){
         return  (_numerator * fraction._denominator) - (fraction._numerator * _denominator);
     }
     @Override public int intValue(){
@@ -794,7 +878,7 @@ public class Fraction extends Number implements Comparable<Fraction> {
         }
         return _numerator / (double) _denominator;
     }
-    @Override public boolean equals(Object o){
+    @Contract(value = "null -> false", pure = true) @Override public boolean equals(Object o){
         if(this == o) return true;
         if(o == null || getClass() != o.getClass()) return false;
         Fraction fraction = (Fraction) o;
