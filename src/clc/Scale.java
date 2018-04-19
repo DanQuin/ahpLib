@@ -680,11 +680,17 @@ package clc;
 
 import java.util.Arrays;
 
+/**
+ * Scale class
+ *
+ * @author <a href="mailto:daniel.quinteros.12@sansano.usm.cl">Daniel Quinteros</a>
+ */
+
 public class Scale {
     
     // Internal constant and types
     // To make the scale from 1 to 9
-    protected static int DEFAULT_LENGTH = 9;
+    static int DEFAULT_LENGTH = 9;
     
     public enum TYPE {
         LINEAR,
@@ -696,48 +702,53 @@ public class Scale {
     
     // CONSTRUCTORS
     /**
-     * Default constructor.
+     * Default constructor
      * <p>
-     *     Calls {@link #Scale(TYPE)} with linear type scale. By default use {@link Scale#DEFAULT_LENGTH} for length.
+     *     Calls {@link #Scale(TYPE)} with linear type scale.
+     *     By default use {@link Scale#DEFAULT_LENGTH} for length.
      * </p>
+     *
      * @see Scale#DEFAULT_LENGTH
      * @see Scale.TYPE#LINEAR
      */
-    public Scale(){
+    Scale(){
         this(TYPE.LINEAR, DEFAULT_LENGTH);
     }
     
     /**
-     * Constructor with type param.
+     * Constructor with type param
      * <p>
-     *     Use default length by default.
+     *     Uses default length by default.
      * </p>
+     *
      * @param type scale type (from enum).
      * @see Scale#DEFAULT_LENGTH
      */
-    public Scale(TYPE type){
+    Scale(TYPE type){
         this(type, DEFAULT_LENGTH);
     }
     
     /**
-     * Constructor with length param.
+     * Constructor with length param
      * <p>
-     *     Use linear scale by default.
+     *     Uses linear scale by default.
      * </p>
+     *
      * @param length scale length.
      * @see Scale.TYPE#LINEAR
      */
-    public Scale(int length){
+    Scale(int length){
         this(TYPE.LINEAR, length);
     }
     
     /**
-     * Constructor with type and length params.
-     * @param type      scale type (view available options from enum TYPE).
-     * @param length    length of the generated scale.
+     * Constructor with type and length params
+     *
+     * @param type      scale type (view available options from enum TYPE)
+     * @param length    length of the generated scale
      * @see   TYPE
      */
-    public Scale(TYPE type, int length){
+    Scale(TYPE type, int length){
         if(length < 0){
             throw new NegativeArraySizeException("Length must be greater than 0");
         }
@@ -761,8 +772,9 @@ public class Scale {
     }
     
     /**
-     * Copy constructor.
-     * @param scale: array with scale numbers.
+     * Copy constructor
+     *
+     * @param scale array with scale numbers
      */
     public Scale(int[] scale){
         _scale = new Fraction[scale.length];
@@ -773,19 +785,34 @@ public class Scale {
 
     // ACCESSORS
     /**
-     * Get the current scale
-     * @return The current scale
+     * Gets the current scale
+     *
+     * @return the current scale
      */
-    public Fraction[] getScale(){
+    Fraction[] getScale(){
         return _scale;
     }
     
     /**
      * Get the current scale length
-     * @return the current scale length.
+     *
+     * @return the current scale length
      */
-    public int getScaleLength(){
+    int getScaleLength(){
         return _scale.length;
+    }
+    
+    /**
+     * Tries to find the given number in this
+     *
+     * @param   value number to search
+     * @return  true if the given number has been found, false otherwise
+     */
+    public boolean contains(double value){
+        for(Fraction fraction : _scale){
+            if(fraction.doubleValue() == value) return true;
+        }
+        return false;
     }
     
     @Override public boolean equals(Object o){
@@ -793,12 +820,5 @@ public class Scale {
         if(o == null || getClass() != o.getClass()) return false;
         Scale scale = (Scale) o;
         return Arrays.equals(_scale, scale._scale);
-    }
-    
-    public boolean contains(double s){
-        for(Fraction fraction : _scale){
-            if(fraction.doubleValue() == s) return true;
-        }
-        return false;
     }
 }
