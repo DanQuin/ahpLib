@@ -678,10 +678,9 @@
 
 package clc;
 
-// TODO documentation
-
 import Jama.EigenvalueDecomposition;
 import Jama.Matrix;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -690,13 +689,31 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 
+/**
+ * Utils class
+ * <p>
+ *     Contains some utils methods used across the project.
+ * </p>
+ *
+ * @author <a href="mailto:daniel.quinteros.12@sansano.usm.cl">Daniel Quinteros</a>
+ */
+
 public class Utils {
     
+    /**
+     * Computes the binomial coefficient
+     *
+     * @param n number of possibilities
+     * @param k number of elements to choose
+     * @return  number of ways of picking {@code k} unordered outcomes from
+     *          {@code n} possibilities
+     * @see     <a href="http://mathworld.wolfram.com/BinomialCoefficient.html">
+     *          binomial coefficient</a>
+     */
     public static long binomial(int n, int k) {
         if(k > n - k){
             k = n - k;
         }
-        
         long b = 1;
         for(int i = 1, m = n; i <= k; i++, m--){
             b = b * m / i;
@@ -704,6 +721,13 @@ public class Utils {
         return b;
     }
     
+    /**
+     * Normalizes the given array to make its sum the given number
+     *
+     * @param   values          array to be normalized
+     * @param   normalizedSum   how much will be the sum of the given array
+     * @return  normalized array
+     */
     public static double[] normalizeArray(double[] values, double normalizedSum){
         if (Double.isInfinite(normalizedSum)) {
             throw new InvalidParameterException("Sum cannot be infinite");
@@ -729,10 +753,22 @@ public class Utils {
         return result;
     }
     
+    /**
+     * Normalizes the given array to make its sum 1 (one)
+     *
+     * @param   values    array to be normalized
+     * @return  normalized array
+     */
     public static double[] normalizeArray(double[] values){
         return normalizeArray(values, 1);
     }
     
+    /**
+     * Multiplies each value of the given array
+     *
+     * @param   values array to compute
+     * @return  multiplication of each value from the given array
+     */
     public static double multiplyArray(double[] values){
         double result = 1;
         final int size = values.length;
@@ -747,6 +783,15 @@ public class Utils {
         return result;
     }
     
+    /**
+     * Sums each value of the given array
+     * <p>
+     *     This method calls {@link clc.Utils#sumArray(double[])}.
+     * </p>
+     *
+     * @param   values array to compute
+     * @return  sum of each value from the given array
+     */
     private static double sumArray(int[] values){
         double[] valuesDouble = new double[values.length];
         for(int idx = 0; idx < values.length; idx++){
@@ -755,6 +800,12 @@ public class Utils {
         return sumArray(valuesDouble);
     }
     
+    /**
+     * Sums each value of the given array
+     *
+     * @param   values array to compute
+     * @return  sum of each value from the given array
+     */
     public static double sumArray(double[] values) {
         double sum = 0;
         for (double value : values) {
@@ -768,6 +819,12 @@ public class Utils {
         return sum;
     }
     
+    /**
+     * Counts how many non-finite numbers there are in the given values
+     *
+     * @param   values numbers to analyze
+     * @return  how many non-finite numbers there are
+     */
     public static int countNoFiniteNumbers(double[] values){
         int result = 0;
         for(double value: values){
@@ -777,15 +834,43 @@ public class Utils {
         }
         return result;
     }
-    public static void fillArray(ArrayList<Double> array, double newVal, int length){
+    
+    /**
+     * Fills the given array with {@code length} numbers equals to {@code newVal}
+     *
+     * @param array     array to be filled
+     * @param newVal    new value to put in to the array
+     * @param length    how many times to put the new value
+     */
+    public static void fillArray(ArrayList<Double> array,
+                                 double newVal,
+                                 int length){
         for(int i = 0; i < length; i++){
             array.add(newVal);
         }
     }
+    
+    /**
+     * Computes the mean of the given array
+     * <p>
+     *     The mean is calculated adding up all the numbers,
+     *     then divide by how many numbers there are
+     * </p>
+     *
+     * @param   values array to analyze
+     * @return  mean of the given array
+     */
     public static double mean(int[] values) {
         if(values.length == 0) throw new ArithmeticException("Division by zero");
         return (sumArray(values) / values.length);
     }
+    
+    /**
+     * Computes the sum of the given array
+     *
+     * @param   vector values to be add
+     * @return  sum of the array
+     */
     public static double sumArray(ArrayList<Double> vector){
         double result = 0d;
         for(Double aVector : vector){
@@ -794,15 +879,24 @@ public class Utils {
         return result;
     }
     
+    /**
+     *  Enum to storage the type of possible return values for
+     *  {@link clc.Utils#findPerronFrobeniusLambda(ComparisonMatrix)}
+     */
     public enum PerronEnum {
         LAMBDA_IDX, LAMBDA_MAX
     }
     
+    /**
+     * Computes tha max eigenvalue and its index, using Perron-Frobenius theorem
+     *
+     * @param   matrix matrix to compute the theorem
+     * @return  a map with max lambda and its index
+     * @see <a href="http://www.math.harvard.edu/library/sternberg/slides/1180912pf.pdf">Perron-Frobenius theorem</a>
+     */
     public static LinkedHashMap<PerronEnum, Double> findPerronFrobeniusLambda(ComparisonMatrix matrix){
-    
         EigenvalueDecomposition ev = matrix.eig();
         Matrix evd = ev.getD();
-    
         int columns = matrix.getColumnDimension();
         int lambdaColumn = 0;
         // Suppose that the max lambda is the first one (0,0)
@@ -815,15 +909,29 @@ public class Utils {
                 lambdaColumn = i;
             }
         }
-        
         LinkedHashMap<PerronEnum, Double> result = new LinkedHashMap<>();
         result.put(PerronEnum.LAMBDA_IDX, (double) lambdaColumn);
         result.put(PerronEnum.LAMBDA_MAX, lambdaMax);
         return result;
     }
     
-    public static Point.Double lineIntersection(Double x11, Double y11, Double x12, Double y12,
-                                           Double x21, Double y21, Double x22, Double y22){
+    /**
+     * Calculates the intersection between two lines described by two points each
+     *
+     * @param   x11 first point, first coordinate, from first line
+     * @param   y11 first point, second coordinate, from first line
+     * @param   x12 second point, first coordinate, from first line
+     * @param   y12 second point, second coordinate, from first line
+     * @param   x21 first point, first coordinate, from second line
+     * @param   y21 first point, second coordinate, from second line
+     * @param   x22 second point, first coordinate, from second line
+     * @param   y22 second point, second coordinate, from second line
+     * @return  the intersection point, null otherwise
+     */
+    @Nullable public static Point.Double lineIntersection(Double x11, Double y11,
+                                                          Double x12, Double y12,
+                                                          Double x21, Double y21,
+                                                          Double x22, Double y22){
         Double m1 =  Double.sum(y11, -y12) / Double.sum(x11, -x12);
         Double b1 =  Double.sum(x11*y12, -x12*y11) / Double.sum(x11, -x12);
         Double m2 =  Double.sum(y21, -y22) / Double.sum(x21, -x22);
@@ -837,27 +945,74 @@ public class Utils {
         return new Point2D.Double(xItpt, yItpt);
     }
     
+    /**
+     * IdxValue class
+     * <p>
+     *     Inner class to make comparison between indexes.
+     *     Stores an index and a value.
+     *     This class implements comparable method
+     *     to allow ordering using value as the key.
+     * </p>
+     */
     public static class IdxValue implements Comparable{
         int _index;
         double _value;
-        
-        public IdxValue(int index, double value){
+    
+        /**
+         * Parametrized constructor
+         *
+         * @param index index to stores
+         * @param value value to stores
+         */
+        IdxValue(int index, double value){
             _index = index;
             _value = value;
         }
-        
-        public int compareTo(Object o) {
-            return Double.compare(_value, ((IdxValue)o)._value);
+    
+        /**
+         * Compares two elements
+         * <p>
+         *     This method uses the value to compare two elements,
+         *     the index as a tie breaker (its mean that if two elements have
+         *     the same {@code _value} they can not have the same {@code _index},
+         *     this ensures a total order and a stable comparable method).
+         * </p>
+         *
+         * @param   o another object to compare
+         * @return  a negative integer, zero, or a positive integer as this object
+         *          is less than, equal to, or greater than the specified object
+         */
+        @Override public int compareTo(Object o) {
+            double result = Double.compare(_value, ((IdxValue)o)._value);
+            return (result != 0)? (int) result : Double.compare(_index, ((IdxValue)o)._index);
         }
-        
+    
+        /**
+         * Gets the index of this
+         *
+         * @return index of this
+         */
         public int getIndex(){
             return _index;
         }
-        
+    
+        /**
+         * Gets the value of this
+         *
+         * @return value of this
+         */
         public double getValue(){
             return _value;
         }
-        
+    
+        /**
+         * Sort an array of {@link java.lang.Double} values using the numbers
+         * as values and indexes to create {@link clc.Utils.IdxValue}s objects
+         *
+         * @param   values values to be sorted
+         * @return  an {@link java.util.ArrayList} of {@link clc.Utils.IdxValue}
+         *          objects sorted
+         */
         public static ArrayList<IdxValue> sort(ArrayList<Double> values){
             ArrayList<IdxValue> items = new ArrayList<>();
             for(int i = 0; i < values.size(); i++){
