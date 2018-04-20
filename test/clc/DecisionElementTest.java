@@ -719,19 +719,19 @@ public class DecisionElementTest {
     
     @Test public void addAndgetSubcriteria(){
         DecisionElement decisionElement2 = new DecisionElement(testCriterionName);
-        decisionElement.addSubCriterion(decisionElement2, true);
+        decisionElement.addSubCriterion(decisionElement2);
         assertNotNull(decisionElement.getSubcriteria());
         assertEquals(1, decisionElement.getSubCriteriaCount(), 0);
         
-        decisionElement.addSubCriterion(testCriterionName + testName, true);
+        decisionElement.addSubCriterion(testCriterionName + testName);
         assertNotNull(decisionElement.getSubcriteria());
         assertEquals(2, decisionElement.getSubCriteriaCount(), 0);
         
-        decisionElement.removeSubCriterion(decisionElement2, true);
+        decisionElement.removeSubCriterion(decisionElement2);
         assertNotNull(decisionElement.getSubcriteria());
         assertEquals(1, decisionElement.getSubCriteriaCount(), 0);
         
-        decisionElement.removeSubCriterion(testCriterionName + testName, true);
+        decisionElement.removeSubCriterion(testCriterionName + testName);
         assertNotNull(decisionElement.getSubcriteria());
         assertEquals(0, decisionElement.getSubCriteriaCount(), 0);
         
@@ -742,13 +742,13 @@ public class DecisionElementTest {
         assertEquals(0, decisionElement.getSubCriteriaCount(), 0);
         assertFalse(decisionElement.hasSubCriterion());
         
-        decisionElement.addSubCriterion(testCriterionName, true);
+        decisionElement.addSubCriterion(testCriterionName);
         assertFalse(decisionElement.isLeaf());
         assertEquals(1, decisionElement.getSubCriteriaCount(), 0);
         assertTrue(decisionElement.hasSubCriterion());
         
-        decisionElement.addSubCriterion(testCriterionName, true);
-        decisionElement.addSubCriterion(testName, true);
+        decisionElement.addSubCriterion(testCriterionName);
+        decisionElement.addSubCriterion(testName);
         assertFalse(decisionElement.isLeaf());
         assertEquals(2, decisionElement.getSubCriteriaCount(), 0);
         assertTrue(decisionElement.hasSubCriterion());
@@ -766,7 +766,7 @@ public class DecisionElementTest {
         comparisonMatrix.set(0, 2, 1d/4);
         comparisonMatrix.set(1, 2, 1d/2);
         
-        decisionElement.setComparisonMatrix(comparisonMatrix, true);
+        decisionElement.setComparisonMatrix(comparisonMatrix);
     
         assertEquals(2, decisionElement.getComparisonMatrix().get(1, 0), 0);
         assertEquals(4, decisionElement.getComparisonMatrix().get(2, 0), 0);
@@ -778,8 +778,8 @@ public class DecisionElementTest {
     
         String criterionC1 = "security";
         DecisionElement decisionElementC1 = new DecisionElement(criterionC1);
-        decisionElementC1.setComparisonMatrix(comparisonMatrix, false);
-        decisionElement.addSubCriterion(decisionElementC1, false);
+        decisionElementC1.setComparisonMatrix(comparisonMatrix);
+        decisionElement.addSubCriterion(decisionElementC1);
     
         comparisonMatrix.set(0, 1, 2);
         comparisonMatrix.set(0, 2, 6);
@@ -787,8 +787,8 @@ public class DecisionElementTest {
         
         String criterionC2 = "health";
         DecisionElement decisionElementC2 = new DecisionElement(criterionC2);
-        decisionElementC2.setComparisonMatrix(comparisonMatrix, false);
-        decisionElement.addSubCriterion(decisionElementC2, false);
+        decisionElementC2.setComparisonMatrix(comparisonMatrix);
+        decisionElement.addSubCriterion(decisionElementC2);
     
         comparisonMatrix.set(0, 1, 1d/2);
         comparisonMatrix.set(0, 2, 1d/8);
@@ -796,8 +796,8 @@ public class DecisionElementTest {
         
         String criterionC3 = "transport";
         DecisionElement decisionElementC3 = new DecisionElement(criterionC3);
-        decisionElementC3.setComparisonMatrix(comparisonMatrix, false);
-        decisionElement.addSubCriterion(decisionElementC3, false);
+        decisionElementC3.setComparisonMatrix(comparisonMatrix);
+        decisionElement.addSubCriterion(decisionElementC3);
     
         assertEquals(criterionC1, decisionElement.getSubCriterionByIndex(0).getName());
         assertEquals(criterionC2, decisionElement.getSubCriterionByIndex(1).getName());
@@ -837,7 +837,7 @@ public class DecisionElementTest {
         }
         
         /* Clear results */
-        decisionElement.clearResultsRecursively(false);
+        decisionElement.clearResultsRecursively();
         
         /* Rankings */
         double[] rankExpected = {142d/495, 877d/3465, 1594d/3465};
@@ -868,7 +868,7 @@ public class DecisionElementTest {
         comparisonMatrix.set(0, 2, 6);
         comparisonMatrix.set(1, 2, 2);
     
-        decisionElement.setComparisonMatrix(comparisonMatrix, true);
+        decisionElement.setComparisonMatrix(comparisonMatrix);
         
         assertEquals(0, decisionElement.getConsistency(
                 FactoryConsistencyMethod.ConsistencyMethodEnum.CONSISTENCY_INDEX,
@@ -890,7 +890,7 @@ public class DecisionElementTest {
         comparisonMatrix.set(0, 1, 4);
         comparisonMatrix.set(0, 2, 2);
         comparisonMatrix.set(1, 2, 1);
-        decisionElement.setComparisonMatrix(comparisonMatrix, true);
+        decisionElement.setComparisonMatrix(comparisonMatrix);
         double consIndexExpected = 0.026810787939486547;
         double consRatioExpected = 0.03041151082065171;
         double consDetExpected = 0.5;
@@ -918,7 +918,7 @@ public class DecisionElementTest {
         comparisonMatrix.set(0, 2, 6);
         comparisonMatrix.set(1, 2, 2);
         
-        decisionElement.setComparisonMatrix(comparisonMatrix, true);
+        decisionElement.setComparisonMatrix(comparisonMatrix);
         decisionElement.removeAllSubCriteria();
         assertEquals(0, decisionElement.getErrorMeasure(
                 FactoryErrorMethod.ErrorMethodEnum.PRIORITY_VIOLATION,
@@ -932,7 +932,7 @@ public class DecisionElementTest {
         comparisonMatrix.set(0, 2, 2);
         comparisonMatrix.set(1, 2, 1);
     
-        decisionElement.setComparisonMatrix(comparisonMatrix, false);
+        decisionElement.setComparisonMatrix(comparisonMatrix);
         decisionElement.removeAllSubCriteria();
     
         double errorPVExpected = 0.5;

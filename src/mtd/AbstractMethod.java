@@ -680,13 +680,25 @@ package mtd;
 
 import clc.ComparisonMatrix;
 
+/**
+ * Describes the behavior of a method
+ *
+ * @author <a href="mailto:daniel.quinteros.12@sansano.usm.cl">Daniel Quinteros</a>
+ */
+
 public abstract class AbstractMethod {
+    /** Name of the method */
     private String _name;
+    /** Description of the method */
     private String _description;
+    /** Flag to know if the results has been computed */
     protected boolean _hasBeenComputed;
+    /** Comparison matrix to compute the method */
     protected ComparisonMatrix _matrix;
     
-    
+    /**
+     * Clears results and recompute them
+     */
     public void recompute(){
         clearResults();
         try{
@@ -696,12 +708,35 @@ public abstract class AbstractMethod {
         }
     }
     
+    /**
+     * Clears the results
+     * <p>
+     *     Only performs a logic clear, note that only the flag is changed.
+     * </p>
+     */
     public void clearResults(){
         _hasBeenComputed = false;
     }
     
+    /**
+     * Computes the results
+     * <p>
+     *     Derived classes must be implement this method, according
+     *     their particular behavior.
+     * </p>
+     */
     public abstract void compute();
     
+    /**
+     * Constructor by default
+     * <p>
+     *     Put the flag {@link mtd.AbstractMethod#_hasBeenComputed} to false.
+     * </p>
+     *
+     * @param name              name of the method
+     * @param description       description of the method
+     * @param comparisonMatrix  matrix to compute results
+     */
     public AbstractMethod(String name, String description,
                           ComparisonMatrix comparisonMatrix){
         _name = name;
@@ -710,24 +745,53 @@ public abstract class AbstractMethod {
         _matrix = comparisonMatrix;
     }
     
+    /**
+     * Constructor without description
+     * <p>
+     *     Put the flag {@link mtd.AbstractMethod#_hasBeenComputed} to false and
+     *     empty description.
+     * </p>
+     *
+     * @param name              name of the method
+     * @param comparisonMatrix  matrix to compute results
+     */
     public AbstractMethod(String name, ComparisonMatrix comparisonMatrix){
         this(name, "", comparisonMatrix);
     }
     
+    /**
+     * Gets the name of the method
+     *
+     * @return the name of the method
+     */
     public String getName(){
         return _name;
     }
     
+    /**
+     * Gets the description of the method
+     *
+     * @return the description of the method
+     */
     public String getDescription(){
         return _description;
     }
     
-    public void setDescription(String description){
-        _description = description;
-    }
-    
+    /**
+     * Sets the name of the method
+     *
+     * @param name name of the method
+     */
     public void setName(String name){
         _name = name;
     }
     
+    /**
+     * Sets the name of the method
+     *
+     * @param description description of the method
+     */
+    public void setDescription(String description){
+        _description = description;
+    }
 }

@@ -808,7 +808,7 @@ public class DecisionProblemSolverTest {
         comparisonMatrix.set(0, 1, 1d/2);
         comparisonMatrix.set(0, 2, 1d/4);
         comparisonMatrix.set(1, 2, 1d/2);
-        decisionElement.setComparisonMatrix(comparisonMatrix, true);
+        decisionElement.setComparisonMatrix(comparisonMatrix);
     
         problem.setRootNode(decisionElement);
         assertEquals(1, problem.getNodeCount(), 0);
@@ -819,7 +819,7 @@ public class DecisionProblemSolverTest {
     
         String criterionC1 = "security";
         DecisionElement decisionElementC1 = new DecisionElement(criterionC1);
-        decisionElementC1.setComparisonMatrix(comparisonMatrix, false);
+        decisionElementC1.setComparisonMatrix(comparisonMatrix);
         
         problem.addSubCriterion(decisionElementC1, false);
         assertEquals(2, problem.getNodeCount(), 0);
@@ -830,9 +830,9 @@ public class DecisionProblemSolverTest {
     
         String criterionC2 = "health";
         DecisionElement decisionElementC2 = new DecisionElement(criterionC2);
-        decisionElementC2.setComparisonMatrix(comparisonMatrix, false);
+        decisionElementC2.setComparisonMatrix(comparisonMatrix);
     
-        problem.addSubCriterion(decisionElementC2, problem.getRoot(), false);
+        problem.addSubCriterion(decisionElementC2, problem.getRoot());
         assertEquals(3, problem.getNodeCount(), 0);
         
         comparisonMatrix.set(0, 1, 1d/2);
@@ -841,7 +841,7 @@ public class DecisionProblemSolverTest {
     
         String criterionC3 = "transport";
         DecisionElement decisionElementC3 = new DecisionElement(criterionC3);
-        decisionElementC3.setComparisonMatrix(comparisonMatrix, false);
+        decisionElementC3.setComparisonMatrix(comparisonMatrix);
     
         problem.addSubCriterion(decisionElementC3, false);
         assertEquals(4, problem.getNodeCount(), 0);
@@ -916,7 +916,7 @@ public class DecisionProblemSolverTest {
         comparisonMatrix.set(1, 2, 1d/2);
         comparisonMatrix.set(1, 3, 1d/2);
         comparisonMatrix.set(2, 3, 2d);
-        decisionElement.setComparisonMatrix(comparisonMatrix, true);
+        decisionElement.setComparisonMatrix(comparisonMatrix);
     
         problem.setRootNode(decisionElement);
         assertEquals(1, problem.getNodeCount(), 0);
@@ -930,7 +930,7 @@ public class DecisionProblemSolverTest {
     
         String criterionC1 = "Salary";
         DecisionElement decisionElementC1 = new DecisionElement(criterionC1);
-        decisionElementC1.setComparisonMatrix(comparisonMatrix, false);
+        decisionElementC1.setComparisonMatrix(comparisonMatrix);
     
         problem.addSubCriterion(decisionElementC1, false);
         assertEquals(2, problem.getNodeCount(), 0);
@@ -941,9 +941,9 @@ public class DecisionProblemSolverTest {
     
         String criterionC2 = "Life";
         DecisionElement decisionElementC2 = new DecisionElement(criterionC2);
-        decisionElementC2.setComparisonMatrix(comparisonMatrix, false);
+        decisionElementC2.setComparisonMatrix(comparisonMatrix);
         
-        problem.addSubCriterion(decisionElementC2, problem.getRoot(), false);
+        problem.addSubCriterion(decisionElementC2, problem.getRoot());
         assertEquals(3, problem.getNodeCount(), 0);
     
         comparisonMatrix.set(0, 1, 1d/7);
@@ -952,7 +952,7 @@ public class DecisionProblemSolverTest {
     
         String criterionC3 = "Interest";
         DecisionElement decisionElementC3 = new DecisionElement(criterionC3);
-        decisionElementC3.setComparisonMatrix(comparisonMatrix, false);
+        decisionElementC3.setComparisonMatrix(comparisonMatrix);
         
         problem.addSubCriterion(decisionElementC3, false);
         assertEquals(4, problem.getNodeCount(), 0);
@@ -963,7 +963,7 @@ public class DecisionProblemSolverTest {
     
         String criterionC4 = "Place";
         DecisionElement decisionElementC4 = new DecisionElement(criterionC4);
-        decisionElementC4.setComparisonMatrix(comparisonMatrix, false);
+        decisionElementC4.setComparisonMatrix(comparisonMatrix);
         
         problem.addSubCriterion(decisionElementC4, false);
         assertEquals(5, problem.getNodeCount(), 0);

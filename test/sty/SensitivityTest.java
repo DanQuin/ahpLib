@@ -734,7 +734,7 @@ public class SensitivityTest {
         comparisonMatrix.set(0, 1, 1d/2);
         comparisonMatrix.set(0, 2, 1d/4);
         comparisonMatrix.set(1, 2, 1d/2);
-        decisionElement.setComparisonMatrix(comparisonMatrix, true);
+        decisionElement.setComparisonMatrix(comparisonMatrix);
     
         problem.setRootNode(decisionElement);
         
@@ -744,7 +744,7 @@ public class SensitivityTest {
     
         String criterionC1 = "security";
         DecisionElement decisionElementC1 = new DecisionElement(criterionC1);
-        decisionElementC1.setComparisonMatrix(comparisonMatrix, false);
+        decisionElementC1.setComparisonMatrix(comparisonMatrix);
     
         problem.addSubCriterion(decisionElementC1, false);
         
@@ -754,9 +754,9 @@ public class SensitivityTest {
     
         String criterionC2 = "health";
         DecisionElement decisionElementC2 = new DecisionElement(criterionC2);
-        decisionElementC2.setComparisonMatrix(comparisonMatrix, false);
+        decisionElementC2.setComparisonMatrix(comparisonMatrix);
     
-        problem.addSubCriterion(decisionElementC2, problem.getRoot(), false);
+        problem.addSubCriterion(decisionElementC2, problem.getRoot());
         
         comparisonMatrix.set(0, 1, 1d/2);
         comparisonMatrix.set(0, 2, 1d/8);
@@ -764,7 +764,7 @@ public class SensitivityTest {
     
         String criterionC3 = "transport";
         DecisionElement decisionElementC3 = new DecisionElement(criterionC3);
-        decisionElementC3.setComparisonMatrix(comparisonMatrix, false);
+        decisionElementC3.setComparisonMatrix(comparisonMatrix);
     
         problem.addSubCriterion(decisionElementC3, false);
         
