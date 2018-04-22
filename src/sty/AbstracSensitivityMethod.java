@@ -706,8 +706,8 @@ public class AbstracSensitivityMethod {
         return _decisionProblem.getRanking(_priorityMethodType);
     }
     
-    public synchronized ArrayList<Double> getRanking(DecisionElement decisionElement,
-                                            ArrayList<Double> newWeights) {
+    private synchronized ArrayList<Double> getRanking(
+            DecisionElement decisionElement, ArrayList<Double> newWeights) {
         /* Get original weights */
         ArrayList<Double> weights = decisionElement.getPriorityVector(_priorityMethodType);
         
@@ -719,17 +719,11 @@ public class AbstracSensitivityMethod {
         newWeights = proportionalWeights(weights, newWeights);
         
         /* Calculate ranking using new weights */
-        //decisionElement.getRanking(newWeights, _priorityMethodType);
-        //ArrayList<Double> ranking = decisionElement.getRanking(newWeights, _priorityMethodType); //.getRanking(_priorityMethodType);
-        
-        /* Restore original weights */
-        //decisionElement.setWeights(weigths);
         return decisionElement.getRanking(newWeights, _priorityMethodType);
     }
     
-    public ArrayList<Double> getRanking(DecisionElement decisionElement,
-                                        int child,
-                                        double weight) {
+    ArrayList<Double> getRanking(
+            DecisionElement decisionElement, int child, double weight) {
         ArrayList<Double> newWeights = new ArrayList<>();
         Utils.fillArray(newWeights, -1, (decisionElement.hasSubCriterion()?
                                                 decisionElement.getSubCriteriaCount():

@@ -680,6 +680,8 @@ package mtd.priority;
 
 import java.util.ArrayList;
 
+// TODO: documentation
+
 public class PriorityResultList extends ArrayList<PriorityResult> {
     
     private int haveThisMethod(FactoryPriorityMethod.PriorityMethodEnum priorityMethodType){

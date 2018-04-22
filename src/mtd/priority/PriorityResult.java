@@ -680,6 +680,8 @@ package mtd.priority;
 
 import java.util.ArrayList;
 
+// TODO: dcumentation
+
 public class PriorityResult {
     private AbstractPriorityMethod _priorityMethod;
     

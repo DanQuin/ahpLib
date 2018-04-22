@@ -734,7 +734,7 @@ public class DecisionProblem {
         _alternatives.addAll(Arrays.asList(Arrays.copyOf(alternatives, alternatives.length)));
     }
     
-    // TODO do this to return list
+    // TODO do this to return (all) list
     public List<String> getAlternatives(){
         return Collections.unmodifiableList(_alternatives);
     }
@@ -768,6 +768,10 @@ public class DecisionProblem {
         if(!_decisionElements.contains(parentNode)) throw new IllegalArgumentException("Node parent doesn't exist");
         parentNode.addSubCriterion(node, compute);
         _decisionElements.add(node);
+    }
+    
+    public void addSubCriterion(DecisionElement node, DecisionElement parentNode){
+        this.addSubCriterion(node, parentNode, false);
     }
     
     public void addSubCriterion(DecisionElement node, boolean compute){
