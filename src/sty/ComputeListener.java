@@ -680,9 +680,27 @@ package sty;
 
 import clc.DecisionElement;
 
-// TODO documentation
+/**
+ * Interface ComputeListener
+ * <p>
+ *     Declares a method to notify that the calculation is done.
+ * </p>
+ *
+ * @author <a href="mailto:daniel.quinteros.12@sansano.usm.cl">Daniel Quinteros</a>
+ */
 
 public interface ComputeListener {
-    void methodHasBeenComputed(
-            String method1, String method2, DecisionElement decisionElement, int current, int total);
+    /**
+     * Notifies that the calculation is done.
+     *
+     * @param method1           method that has been used to calculate
+     * @param method2           another method (if necessary) that has been used to calculate
+     * @param decisionElement   what element has been used (comparison matrix)
+     * @param current           current calculation
+     * @param total             total amount of calculations to be made
+     */
+    void methodHasBeenComputed(String method1,
+                               String method2,
+                               DecisionElement decisionElement,
+                               int current, int total);
 }
