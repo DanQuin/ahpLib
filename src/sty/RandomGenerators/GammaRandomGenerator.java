@@ -680,11 +680,13 @@ package sty.RandomGenerators;
 
 import java.util.ArrayList;
 
-// TODO: documentation
-
 /**
- * Generates a random value from the gamma distribution
- * Algorithms taken from: http://mallet.cs.umass.edu/api/cc/mallet/util/Randoms.html
+ * Class GammaRandomGenerator
+ * <p>
+ *     Generates a random value from the gamma distribution.
+ *     Algorithms taken from:
+ *     <a href="http://mallet.cs.umass.edu/api/cc/mallet/util/Randoms.html">http://mallet.cs.umass.edu/api/cc/mallet/util/Randoms.html</a>.
+ * </p>
  */
 public class GammaRandomGenerator implements RandomGenerator {
     
@@ -700,18 +702,22 @@ public class GammaRandomGenerator implements RandomGenerator {
         _beta = beta;
     }
     
-    /** Return a random double drawn from a Gamma distribution with
-     * mean <code>alpha*beta</code> and variance <code>alpha*beta^2</code>. */
+    /**
+     * Returns a random double drawn from a Gamma distribution with
+     * mean {@code alpha*beta} and variance {@code alpha*beta^2}
+     * */
     public synchronized double nextGamma(double alpha, double beta) {
         return nextGamma(alpha, beta,0);
     }
     
-    /** Return a random double drawn from a Gamma distribution
-     *  with mean <code>alpha*beta+lambda</code> and variance <code>alpha*beta^2</code>.
+    /**
+     *
+     * Returns a random double drawn from a Gamma distribution with mean
+     * {@code alpha*beta+lambda} and variance {@code alpha*beta^2}.
      *  Note that this means the pdf is:
-     *     <code>frac{ x^{alpha-1} exp(-x/beta) }{ beta^alpha Gamma(alpha) }</code>
+     *  {@code frac{ x^{alpha-1} exp(-x/beta) }{ beta^alpha Gamma(alpha)}}
      *  in other words, beta is a "scale" parameter. An alternative
-     *  parameterization would use 1/beta, the "rate" parameter.
+     *  parameterization would use {@code 1/beta}, the "rate" parameter.
      */
     public synchronized double nextGamma(double alpha, double beta, double lambda) {
         // Random Uniform Generator
@@ -784,21 +790,15 @@ public class GammaRandomGenerator implements RandomGenerator {
                     }
                 }
             }
-			
-			/* // Old version, uses time linear in alpha
-			   double y = -Math.log (nextUniform ());
-			   while (nextUniform () > Math.pow (y * Math.exp (1 - y), alpha - 1))
-			   y = -Math.log (nextUniform ());
-			   gamma = alpha * y;
-			*/
         }
         return beta*gamma+lambda;
     }
     
     /**
      * Generates random weights from the Gamma distribution using the given weights as the alpha parameter of the distribution
-     * @param weights The values to be used as the alpha parameter of the distribution
-     * @return an array with the random weights
+     *
+     * @param   weights The values to be used as the alpha parameter of the distribution
+     * @return  an array with the random weights
      */
     @Override
     public ArrayList<Double> generateWeights(ArrayList<Double> weights) {

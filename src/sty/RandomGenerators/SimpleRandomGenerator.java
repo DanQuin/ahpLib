@@ -681,12 +681,21 @@ package sty.RandomGenerators;
 import java.util.ArrayList;
 import java.util.Collections;
 
-// TODO: documentation
+/**
+ * Class SimpleRandomGenerator
+ *
+ * @author <a href="mailto:daniel.quinteros.12@sansano.usm.cl">Daniel Quinteros</a>
+ */
 
 public class SimpleRandomGenerator extends java.util.Random implements RandomGenerator{
     
+    /**
+     * Calculate {@code quantity} uniformly distributed random numbers
+     *
+     * @param   quantity numbers of random numbers to calculate
+     * @return  array with random numbers
+     */
     private ArrayList<Double> generateRandom(int quantity){
-        
         ArrayList<Double> result = new ArrayList<>();
         for(int i = 0; i < quantity; i++){
             /* This method use the default random generator number implementation*/
@@ -713,8 +722,9 @@ public class SimpleRandomGenerator extends java.util.Random implements RandomGen
         Collections.sort(randomNumbers);
         
         /* Calculate random weights */
-        /* This is a geometric sum (x0 + (x1-x0) + (x2-x1) + ... + (x{n-1}+xn) + (1-xn)
-        * when we sum all terms -> 1*/
+        /* This is a geometric sum
+        (x0 + (x1-x0) + (x2-x1) + ... + (x{n-1}+xn) + (1-xn)
+        when we sum all terms -> 1 */
         randomWeights.add(randomNumbers.get(0));
         for(int i = 1; i < quantity - 1; i++){
             randomWeights.add(randomNumbers.get(i) - randomNumbers.get(i - 1));
