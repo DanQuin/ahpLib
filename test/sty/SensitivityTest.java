@@ -694,11 +694,8 @@ import static org.junit.Assert.assertNotNull;
 
 public class SensitivityTest {
     
-    private DecisionProblem problem;
-    private DecisionProblemSolver solver;
-    
     @Test public void decisionProblem(){
-        solver = new DecisionProblemSolver();
+        DecisionProblemSolver solver = new DecisionProblemSolver();
         assertNotNull(solver);
     
         for(FactoryPriorityMethod.PriorityMethodEnum enume:
@@ -720,8 +717,8 @@ public class SensitivityTest {
         "DISEÑO E IMPLEMENTACIÓN DE UNA API AHP PARA LA TOMA DE DECISIONES CON MÚLTIPLES CRITERIOS"
         by Daniel Quinteros
         Results from Expert Choice*/
-        
-        problem = new DecisionProblem("Best city");
+    
+        DecisionProblem problem = new DecisionProblem("Best city");
         String alternatives[] = {"London", "Madrid", "Santiago"};
         problem.setAlternatives(alternatives);
         
@@ -785,11 +782,5 @@ public class SensitivityTest {
             assertEquals(alternativeExpected[i][0], rank.get(i).getAlternative1(), delta);
             assertEquals(alternativeExpected[i][1], rank.get(i).getAlternative2(), delta);
         }
-        
-        /*ProbabilisticSensitivityMethod prob = new ProbabilisticSensitivityMethod(problem, FactoryPriorityMethod.PriorityMethodEnum.NORMALISED_COLUMN_SUM);
-        prob.setPreserveRankOrder(true);
-        prob.addAllSimulationNodes(false);
-        ArrayList<Double> testse = prob.getRanking();
-        System.out.println("hdjaskf");*/
     }
 }

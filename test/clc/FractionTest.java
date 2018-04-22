@@ -867,7 +867,7 @@ public class FractionTest {
     @Test public void compareTo(){
         fractionA = new Fraction(2,1);
         fractionB = fractionA;
-        assertEquals(0, fractionB.compareTo(fractionB), 0);
+        assertEquals(0, fractionB.compareTo(fractionA), 0);
     
         fractionA = new Fraction(21,-7);
         fractionB = new Fraction(9,-3);
