@@ -683,14 +683,35 @@ import mtd.priority.AbstractPriorityMethod;
 
 import java.util.LinkedHashMap;
 
+/**
+ * Class FactoryConsistencyMethod
+ * <p>
+ *     Class to create consistency methods objects.
+ * </p>
+ *
+ * @author <a href="mailto:daniel.quinteros.12@sansano.usm.cl">Daniel Quinteros</a>
+ */
+
 public class FactoryConsistencyMethod {
     
+    /**
+     * Types of available methods
+     * <p>
+     *     When new consistency method want to be incorporated to the API,
+     *     it must be added here.
+     * </p>
+     */
     public enum ConsistencyMethodEnum {
-        CONSISTENCY_INDEX, CONSISTENCY_RATIO, DETERMINANT_INDEX, GEOMETRIC_INDEX
+        CONSISTENCY_INDEX,
+        CONSISTENCY_RATIO,
+        DETERMINANT_INDEX,
+        GEOMETRIC_INDEX
     }
     
+    /** Contains the name associated to the method */
     private static LinkedHashMap<ConsistencyMethodEnum, String> _names;
-    private static LinkedHashMap<ConsistencyMethodEnum, String> _descriptions;
+    /** Contains the description associated to the method */
+     private static LinkedHashMap<ConsistencyMethodEnum, String> _descriptions;
     
     static {
         _names = new LinkedHashMap<>();
@@ -706,44 +727,109 @@ public class FactoryConsistencyMethod {
         _descriptions.put(ConsistencyMethodEnum.GEOMETRIC_INDEX, "");
     }
     
+    /**
+     * Default constructor
+     */
     private FactoryConsistencyMethod(){}
     
+    /**
+     * Creates a new consistency method object
+     * <p>
+     *     Use the default name for the method as defined by
+     *     {@link mss.consistency.FactoryConsistencyMethod#_names} and
+     *     the description defined by
+     *     {@link mss.consistency.FactoryConsistencyMethod#_descriptions}.
+     * </p>
+     *
+     * @param   type                type of method to create
+     * @param   comparisonMatrix    comparison matrix used by this
+     * @param   priorityMethod      priority method used by this to
+     *                              calculate the weight vector
+     * @return  an object with the given specifications
+     */
     public static AbstractConsistencyMethod createMethod(ConsistencyMethodEnum type,
-                                                  ComparisonMatrix comparisonMatrix,
-                                                  AbstractPriorityMethod priorityMethod){
+                                                         ComparisonMatrix comparisonMatrix,
+                                                         AbstractPriorityMethod priorityMethod){
         return createMethod(type, getName(type), comparisonMatrix, priorityMethod);
     }
     
-    public static AbstractConsistencyMethod createMethod(ConsistencyMethodEnum type,
-                                                  String name,
-                                                  ComparisonMatrix comparisonMatrix,
-                                                  AbstractPriorityMethod priorityMethod){
+    /**
+     * Creates a new consistency method object
+     * <p>
+     *     Use the default description defined by
+     *     {@link mss.consistency.FactoryConsistencyMethod#_descriptions}.
+     * </p>
+     *
+     * @param   type                type of method to create
+     * @param   name                method name
+     * @param   comparisonMatrix    comparison matrix used by this
+     * @param   priorityMethod      priority method used by this to
+     *                              calculate the weight vector
+     * @return  an object with the given specifications
+     */
+    private static AbstractConsistencyMethod createMethod(ConsistencyMethodEnum type,
+                                                          String name,
+                                                          ComparisonMatrix comparisonMatrix,
+                                                          AbstractPriorityMethod priorityMethod){
         return createMethod(type, name, getDescription(type), comparisonMatrix, priorityMethod);
     }
     
-    public static AbstractConsistencyMethod createMethod(ConsistencyMethodEnum type,
-                                                  String name,
-                                                  String description,
-                                                  ComparisonMatrix comparisonMatrix,
-                                                  AbstractPriorityMethod priorityMethod){
+    /**
+     * Creates a new consistency method object
+     * @param   type                type of method to create
+     * @param   name                method name
+     * @param   description         method description
+     * @param   comparisonMatrix    comparison matrix used by this
+     * @param   priorityMethod      priority method used by this to
+     *                              calculate the weight vector
+     * @return  an object with the given specifications
+     */
+    private static AbstractConsistencyMethod createMethod(ConsistencyMethodEnum type,
+                                                          String name,
+                                                          String description,
+                                                          ComparisonMatrix comparisonMatrix,
+                                                          AbstractPriorityMethod priorityMethod){
+        /* If new method is added, IT MUST BE covered by this method */
         switch(type){
             case CONSISTENCY_INDEX:
-                return new ConsistencyIndexMethod(name, description, comparisonMatrix, priorityMethod);
+                return new ConsistencyIndexMethod(name,
+                                                  description,
+                                                  comparisonMatrix,
+                                                  priorityMethod);
             case CONSISTENCY_RATIO:
-                return new ConsistencyRatioMethod(name, description, comparisonMatrix, priorityMethod);
+                return new ConsistencyRatioMethod(name,
+                                                  description,
+                                                  comparisonMatrix,
+                                                  priorityMethod);
             case DETERMINANT_INDEX:
-                return new ConsistencyDeterminantIndexMethod(name, description, comparisonMatrix, priorityMethod);
+                return new ConsistencyDeterminantIndexMethod(name,
+                                                             description,
+                                                             comparisonMatrix,
+                                                             priorityMethod);
             case GEOMETRIC_INDEX:
-                return new ConsistencyGeometricIndexMethod(name, description, comparisonMatrix, priorityMethod);
+                return new ConsistencyGeometricIndexMethod(name,
+                                                           description,
+                                                           comparisonMatrix,
+                                                           priorityMethod);
         }
         return null;
     }
     
+    /**
+     * Gets the default name of some consistency method type
+     * @param   type consistency method type
+     * @return  name by default
+     */
     public static String getName(ConsistencyMethodEnum type){
         return _names.get(type);
     }
     
-    public static String getDescription(ConsistencyMethodEnum type){
+    /**
+     * Gets the default description of some consistency method type
+     * @param   type consistency method type
+     * @return  description by default
+     */
+    private static String getDescription(ConsistencyMethodEnum type){
         return _descriptions.get(type);
     }
     

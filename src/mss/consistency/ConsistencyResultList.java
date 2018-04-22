@@ -682,13 +682,29 @@ import mtd.priority.FactoryPriorityMethod;
 
 import java.util.ArrayList;
 
+/**
+ * Class ConsistencyResultList
+ * <p>
+ *     Utility class to storage a set of consistency result.
+ * </p>
+ *
+ * @author <a href="mailto:daniel.quinteros.12@sansano.usm.cl">Daniel Quinteros</a>
+ */
+
 public class ConsistencyResultList extends ArrayList<ConsistencyResult>{
-    
+    /**
+     * Gets the object that uses given priority and consistency methods
+     * to calculate the consistency
+     *
+     * @param   consistencyMethodType   consistency method to search
+     * @param   priorityMethodType      priority method to search
+     * @return  object that uses the given methods to calculate
+     *          the consistency measure
+     */
     public AbstractConsistencyMethod getForType(
             FactoryConsistencyMethod.ConsistencyMethodEnum consistencyMethodType,
             FactoryPriorityMethod.PriorityMethodEnum priorityMethodType){
         for (ConsistencyResult consistencyResult : this) {
-            consistencyResult = consistencyResult;
             if (consistencyResult.isType(consistencyMethodType, priorityMethodType)) {
                 return consistencyResult.getMethod();
             }

@@ -681,32 +681,84 @@ package mss.consistency;
 import mtd.priority.AbstractPriorityMethod;
 import mtd.priority.FactoryPriorityMethod;
 
+/**
+ * Class ConsistencyResult
+ * <p>
+ *     Stores the result obtained from a method, associating the method
+ *     with the result.
+ * </p>
+ *
+ * @author <a href="mailto:daniel.quinteros.12@sansano.usm.cl">Daniel Quinteros</a>
+ */
+
 public class ConsistencyResult {
+    /** Method using to calculates the result */
     private AbstractConsistencyMethod _consistencyMethod;
+    /** Priority method to calculates the weight vector */
     private AbstractPriorityMethod _priorityMethod;
     
-    public ConsistencyResult(AbstractConsistencyMethod consistencyMethod, AbstractPriorityMethod priorityMethod){
+    /**
+     * Parametrized constructor
+     * <p>
+     *     Creates an object that uses given priority and consistency
+     *     method to calculates.
+     * </p>
+     *
+     * @param consistencyMethod method to measure consistency
+     * @param priorityMethod    priority method to calculate weight vector
+     */
+    public ConsistencyResult(AbstractConsistencyMethod consistencyMethod,
+                             AbstractPriorityMethod priorityMethod){
         _consistencyMethod = consistencyMethod;
         _priorityMethod = priorityMethod;
     }
     
+    /**
+     * Gets consistency calculated by this
+     *
+     * @return consistency using methods of this
+     */
     public double getResult() {
         return _consistencyMethod.getResult();
     }
     
-    public boolean isType(
+    /**
+     * Checks if this is an element that uses given methods
+     *
+     * @param   consistencyMethod   consistency method to check for this
+     * @param   priorityMethodType  consistency method to check for this
+     * @return  true if this uses given (both) methods
+     *          to calculate the consistency
+     */
+    boolean isType(
             FactoryConsistencyMethod.ConsistencyMethodEnum consistencyMethod,
             FactoryPriorityMethod.PriorityMethodEnum priorityMethodType){
         return (_consistencyMethod.getType() == consistencyMethod) &&
                 (_priorityMethod.getType() == priorityMethodType);
     }
+    
+    /**
+     * Makes a logical clear of the results
+     */
     public void clearResult(){
         _consistencyMethod.clearResults();
         _priorityMethod.clearResults();
     }
+    
+    /**
+     * Gets the consistency method from this
+     *
+     * @return consistency method from this
+     */
     public AbstractConsistencyMethod getMethod(){
         return _consistencyMethod;
     }
+    
+    /**
+     * Gets the priority method used to calculate weight vector
+     *
+     * @return priority method used by this
+     */
     public AbstractPriorityMethod getPriorityMethod(){
         return _priorityMethod;
     }

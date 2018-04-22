@@ -682,15 +682,39 @@ import clc.ComparisonMatrix;
 import mtd.AbstractMethod;
 import mtd.priority.AbstractPriorityMethod;
 
+/**
+ * Class AbstractConsistencyMethod
+ * <p>
+ *     Declares the minimum behavior that any consistency method needs to have.
+ * </p>
+ *
+ * @author <a href="mailto:daniel.quinteros.12@sansano.usm.cl">Daniel Quinteros</a>
+ */
+
 public abstract class AbstractConsistencyMethod extends AbstractMethod{
+    /** Consistency method result */
     double _result;
+    /** Consistency method uses to calculate consistency measure */
     AbstractPriorityMethod _priorityMethod;
+    /** */
     protected FactoryConsistencyMethod.ConsistencyMethodEnum _type;
     
+    /**
+     * Gets what consistency method used to calculate consistency measure
+     * by this
+     *
+     * @return consistency method of this
+     */
     public FactoryConsistencyMethod.ConsistencyMethodEnum getType(){
         return _type;
     }
     
+    /**
+     * Gets the result obtained when calculating the consistency measure
+     * using the methods with which the object was created
+     *
+     * @return consistency measure
+     */
     public double getResult(){
         if(!_hasBeenComputed){
             try{
@@ -702,12 +726,43 @@ public abstract class AbstractConsistencyMethod extends AbstractMethod{
         return _result;
     }
     
-    public AbstractConsistencyMethod(String name, String description, ComparisonMatrix comparisonMatrix, AbstractPriorityMethod priorityMethod){
+    /**
+     * Parametrized constructor
+     * <p>
+     *     Creates an object with some name, description, comparison matrix
+     *     and priority method (used to calculate the result).
+     * </p>
+     *
+     * @param name              priority method name
+     * @param description       priority method description
+     * @param comparisonMatrix  comparison matrix to calculate the
+     *                          consistency measure
+     * @param priorityMethod    which type is this
+     */
+    AbstractConsistencyMethod(String name,
+                              String description,
+                              ComparisonMatrix comparisonMatrix,
+                              AbstractPriorityMethod priorityMethod){
         super(name, description, comparisonMatrix);
         _priorityMethod = priorityMethod;
     }
     
-    public AbstractConsistencyMethod(String name, ComparisonMatrix comparisonMatrix, AbstractPriorityMethod priorityMethod){
+    /**
+     * Parametrized constructor
+     * <p>
+     *     Creates an object with some name, comparison matrix
+     *     and priority method (used to calculate the result).
+     *     Leaving the description of the method empty.
+     * </p>
+     *
+     * @param name              priority method name
+     * @param comparisonMatrix  comparison matrix to calculate the
+     *                          consistency measure
+     * @param priorityMethod    which type is this
+     */
+    AbstractConsistencyMethod(String name,
+                              ComparisonMatrix comparisonMatrix,
+                              AbstractPriorityMethod priorityMethod){
         super(name, comparisonMatrix);
         _priorityMethod = priorityMethod;
     }
