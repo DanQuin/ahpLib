@@ -805,7 +805,17 @@ public class DecisionElement {
         }
         return null;
     }
-    
+    /**
+     * Adds a {@link DecisionElement} as a child (sub-decisionElement)
+     * and do not recompute the results
+     *
+     * @param   decisionElement   the child {@link clc.DecisionElement}
+     * @return  {@link DecisionElement} that has been added, null otherwise
+     */
+    public DecisionElement addSubCriterion(DecisionElement decisionElement) {
+        return addSubCriterion(decisionElement, false);
+    }
+
     /**
      * Adds a new criterion with the given name as a child (sub-criterion)
      * of this criterion
@@ -819,7 +829,18 @@ public class DecisionElement {
         DecisionElement decisionElement = new DecisionElement(name);
         return addSubCriterion(decisionElement, recompute);
     }
-    
+
+    /**
+     * Adds a new criterion with the given name as a child (sub-criterion)
+     * and do not recompute the results
+     *
+     * @param name      the name of the child criterion
+     * @return          the criterion that has been added
+     */
+    public DecisionElement addSubCriterion(String name) {
+        return addSubCriterion(name, false);
+    }
+
     /**
      * Returns a list with the children (sub criteria)
      * @return A list with the child criteria
@@ -900,7 +921,11 @@ public class DecisionElement {
     public boolean removeSubCriterion(String name, boolean recompute) {
         return removeSubCriterion(getSubCriterionIndex(name), recompute);
     }
-    
+
+    public boolean removeSubCriterion(String name) {
+        return removeSubCriterion(getSubCriterionIndex(name), false);
+    }
+
     /**
      * Removes the sub-decisionElement decisionElement
      * @param decisionElement The decisionElement to be removed
@@ -909,7 +934,16 @@ public class DecisionElement {
     public boolean removeSubCriterion(DecisionElement decisionElement, boolean recompute){
         return removeSubCriterion(getSubCriterionIndex(decisionElement), recompute);
     }
-    
+
+    /**
+     * Removes the sub-decisionElement decisionElement and do not recompute the results
+     * @param decisionElement The decisionElement to be removed
+     * @return true if the element in that index has been removed
+     */
+    public boolean removeSubCriterion(DecisionElement decisionElement){
+        return removeSubCriterion(getSubCriterionIndex(decisionElement), false);
+    }
+
     /**
      * Removes all children (sub-criteria) from this criterion
      */
@@ -952,7 +986,15 @@ public class DecisionElement {
         }
         clearResults(recompute);
     }
-    
+
+    /**
+     * Sets the comparison matrix and do not recompute the results
+     * @param comparisonMatrix the matrix
+     */
+     public void setComparisonMatrix(ComparisonMatrix comparisonMatrix) {
+        setComparisonMatrix(comparisonMatrix, false);
+     }
+
     /**
      * Returns the matrix with the pairwise comparisons.
      * @return the PCMatrix object
@@ -1082,7 +1124,15 @@ public class DecisionElement {
             child.clearResultsRecursively(recompute);
         }
     }
-    
+
+    /**
+     * Clear all results of this criterion and results
+     * of its sub-criteria recursively (without recompute)
+     */
+    public void clearResultsRecursively() {
+        clearResultsRecursively(false);
+    }
+
     /**
      * Returns the priorities of the alternatives using <code>priorityMethod</code>
      * @return An <code>LinkedHashMap</code> with the priority vector for this decision element.
