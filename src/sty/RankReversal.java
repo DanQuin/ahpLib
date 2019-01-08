@@ -684,8 +684,7 @@ import clc.DecisionElement;
 
 public class RankReversal{
     private DecisionElement _decisionElement;
-    /* If _alternative = -1, mean that we refer to an alternative,
-    other wise its a criterion */
+    /* If _alternative = -1 means rankReversal is for a criterion, otherwise it is for an alternative */
     private int _alternative;
     private Double _weight;
     private Double _ranking;

@@ -718,8 +718,14 @@ public class NumercialSensitivityMethod extends AbstracSensitivityMethod{
         return getRankReversals(_decisionElement, _child);
     }
     
-    public ArrayList<RankReversal> getRankReversals(DecisionElement decisionElement, int child) {
+    public ArrayList<RankReversal> getRankReversals(DecisionElement decisionElement,
+                                                    int child) {
         ArrayList<RankReversal> result = new ArrayList<>();
+        // Rank reversal is not defined for leaf nodes
+        if (decisionElement.isLeaf() ||
+            decisionElement.getSubCriteriaCount() <= child) {
+            return result;
+        }
         
         ArrayList<Double> rankingAt0 = getRanking(decisionElement, child, 0);
         ArrayList<Double> rankingAt1 = getRanking(decisionElement, child, 1);
@@ -731,17 +737,20 @@ public class NumercialSensitivityMethod extends AbstracSensitivityMethod{
                                                                             1d, rankingAt1.get(i),
                                                                             0d, rankingAt0.get(j),
                                                                             1d, rankingAt1.get(j));
-                    if (intersectionPoint != null){
-                        DecisionElement aDecisionElement = decisionElement;
+                    if (intersectionPoint != null &&
+                        intersectionPoint.getX() >= 0 &&
+                        intersectionPoint.getY() >= 0 &&
+                        intersectionPoint.getX() <= 1 &&
+                        intersectionPoint.getY() <= 1){
+                        DecisionElement aDecisionElement = decisionElement.getSubcriteria().get(child);
                         int alternative = child;
-                        if (decisionElement.getSubCriteriaCount() > 0){
-                            aDecisionElement = decisionElement.getSubcriteria().get(child);
+                        if (!aDecisionElement.isLeaf()){
                             alternative = -1;
                         }
                         RankReversal reversal = new RankReversal(aDecisionElement,
                                                                  alternative,
-                                                                 intersectionPoint.getX(),
-                                                                 intersectionPoint.getY(),
+                                                                 Math.abs(intersectionPoint.getX()),
+                                                                 Math.abs(intersectionPoint.getY()),
                                                                  i, j);
                         result.add(reversal);
                     }

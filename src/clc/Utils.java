@@ -914,7 +914,33 @@ public class Utils {
         result.put(PerronEnum.LAMBDA_MAX, lambdaMax);
         return result;
     }
-    
+
+    /**
+     * Calculates the slope (of a line) from two points
+     *
+     * @param   x1 first point, first coordinate
+     * @param   y1 first point, second coordinate
+     * @param   x2 second point, first coordinate
+     * @param   y2 second point, second coordinate
+     * @return the slope
+     */
+    static Double getM(Double x1, Double y1, Double x2, Double y2) {
+        return Double.sum(y1, -y2) / Double.sum(x1, -x2);
+    }
+
+    /**
+     * Calculates the intersection with axis y (of a line) from two points
+     *
+     * @param   x1 first point, first coordinate
+     * @param   y1 first point, second coordinate
+     * @param   x2 second point, first coordinate
+     * @param   y2 second point, second coordinate
+     * @return the intersection
+     */
+    static Double getB (Double x1, Double y1, Double x2, Double y2) {
+        return Double.sum(x1*y2, -x2*y1) / Double.sum(x1, -x2);
+    }
+
     /**
      * Calculates the intersection between two lines described by two points each
      *
@@ -932,14 +958,16 @@ public class Utils {
                                                           Double x12, Double y12,
                                                           Double x21, Double y21,
                                                           Double x22, Double y22){
-        Double m1 =  Double.sum(y11, -y12) / Double.sum(x11, -x12);
-        Double b1 =  Double.sum(x11*y12, -x12*y11) / Double.sum(x11, -x12);
-        Double m2 =  Double.sum(y21, -y22) / Double.sum(x21, -x22);
-        Double b2 =  Double.sum(x21*y22, -x22*y21) / Double.sum(x21, -x22);
+        Double m1 =  getM(x11, y11, x12, y12);
+        Double b1 =  getB(x11, y11, x12, y12);
+        Double m2 =  getM(x21, y21, x22, y22);
+        Double b2 =  getB(x21, y21, x22, y22);
         Double xItpt = Double.sum(b2, -b1) / Double.sum(m1, -m2);
         Double yItpt = Double.sum(m1 * xItpt, b1);
-        if(xItpt.isNaN() || yItpt.isNaN()||
-                xItpt.isInfinite() || yItpt.isInfinite()){
+        if(xItpt.isNaN() ||
+           yItpt.isNaN()||
+           xItpt.isInfinite() ||
+           yItpt.isInfinite()){
             return null;
         }
         return new Point2D.Double(xItpt, yItpt);
